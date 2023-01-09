@@ -8,7 +8,8 @@ import (
 )
 
 const (
-	SERVER_TYPE = "tcp"
+	SERVER_TYPE          = "tcp"
+	HTTP_RESPONSE_HEADER = "HTTP/1.1 200 OK\r\n\r\n"
 )
 
 type App struct {
@@ -59,6 +60,13 @@ func Proccess_Connection(Con net.Conn) {
 
 	fmt.Println("Received: ", string(buffer[:mLen]))
 
-	_, err = Con.Write([]byte(fmt.Sprintf("This is your route %s", route)))
+	html_page, err := return_route(route)
+	if err != nil {
+		return
+	}
+
+	//_, err = Con.Write([]byte(fmt.Sprintf("This is your route %s", route)))
+	Con.Write([]byte(HTTP_RESPONSE_HEADER + html_page))
+	//Con.Write([]byte("HTTP/1.1 200 OK\r\n\r\n<html><head><title>asd</title></head><body><p>asd</p></body></html>"))
 	Con.Close()
 }

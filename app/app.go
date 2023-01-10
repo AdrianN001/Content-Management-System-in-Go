@@ -50,6 +50,7 @@ func (this App) Init_webserver(host string, port int, process func(net.Conn)) {
 }
 
 func Proccess_Connection(Con net.Conn) {
+	defer Con.Close()
 	buffer := make([]byte, 1024)
 	mLen, err := Con.Read(buffer)
 	if err != nil {
@@ -65,8 +66,6 @@ func Proccess_Connection(Con net.Conn) {
 		return
 	}
 
-	//_, err = Con.Write([]byte(fmt.Sprintf("This is your route %s", route)))
+	//FIXME: THE ERROR MIGHT BE BECAUSE THE HTML PAGE HAS "\n", while the response need a plain text like bytestream
 	Con.Write([]byte(HTTP_RESPONSE_HEADER + html_page))
-	//Con.Write([]byte("HTTP/1.1 200 OK\r\n\r\n<html><head><title>asd</title></head><body><p>asd</p></body></html>"))
-	Con.Close()
 }

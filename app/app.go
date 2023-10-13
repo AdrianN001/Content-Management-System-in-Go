@@ -61,11 +61,12 @@ func Proccess_Connection(Con net.Conn) {
 
 	fmt.Println("Received: ", string(buffer[:mLen]))
 
-	html_page, err := return_route(route)
+
+	response, err := return_route(route)
 	if err != nil {
 		return
 	}
 
 	//FIXME: THE ERROR MIGHT BE BECAUSE THE HTML PAGE HAS "\n", while the response need a plain text like bytestream
-	Con.Write([]byte(HTTP_RESPONSE_HEADER + html_page))
+	Con.Write([]byte(HTTP_RESPONSE_HEADER + response))
 }

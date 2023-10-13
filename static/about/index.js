@@ -1,1 +1,1 @@
-window.alert("HELLO")
+window.alert("asdasd")
